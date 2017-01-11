@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Brain : MonoBehaviour 
 {
+	[HideInInspector]
+	public Entity entity;
 
+
+	public virtual void Tick()
+	{
+		
+	}
 
 }
