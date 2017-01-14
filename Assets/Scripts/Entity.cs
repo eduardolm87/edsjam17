@@ -1,42 +1,86 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Entity : MonoBehaviour
 {
-	public CapsuleCollider collider;
-	public Rigidbody rigidbody;
-	public Brain brain;
-	public Locomotor locomotor;
-	public Stats stats = new Stats();
+    public CapsuleCollider collider;
+    public Rigidbody rigidbody;
+    public Brain brain;
+    public Locomotor locomotor;
+    public Stats stats = new Stats();
+    public string[] HurtGroups = new string[] { "PLAYER" };
 
-	[System.Serializable]
-	public class Stats
-	{
-		public int HPMax = 10;
-		public int HP = 10;
-
-		public int Speed = 1;
-
-		public void Reset()
-		{
-			HP = HPMax;
-		}
-	}
+    //states and flags
+    [HideInInspector]
+    public float AttackCooldown = 0;
+    [HideInInspector]
+    public float StunCooldown = 0;
 
 
-	void Awake()
-	{
-		brain.entity = this;
-		locomotor.entity = this;
-	}
+    [System.Serializable]
+    public class Stats
+    {
+        public int HPMax = 10;
+        public int HP = 10;
+
+        public int Speed = 1;
+
+        public void Reset()
+        {
+            HP = HPMax;
+        }
+    }
 
 
-	void Update()
-	{
-		if (!brain)
-			return;
+    void Awake()
+    {
+        brain.entity = this;
+        locomotor.entity = this;
+    }
 
-		brain.Tick();
-	}
+
+    void Update()
+    {
+        Cooldowns();
+
+        if (!brain)
+            return;
+
+        brain.Tick();
+    }
+
+    void Cooldowns()
+    {
+        ReduceCooldownToZero(ref AttackCooldown);
+        ReduceCooldownToZero(ref StunCooldown);
+    }
+
+    void ReduceCooldownToZero(ref float Variable)
+    {
+        if (Variable > 0)
+        {
+            Variable -= Time.deltaTime;
+            if (Variable < 0)
+                Variable = 0;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Hitbox hitbox = other.GetComponent<Hitbox>();
+        if (hitbox != null)
+        {
+            if (hitbox.owner != this)
+            {
+                if (hitbox.AffectToGroups.ToList().Intersect(HurtGroups).ToList().Count() > 0)
+                {
+                    Debug.Log("HITBOX ME AFECTA");
+                }
+            }
+        }
+    }
+
+
 }

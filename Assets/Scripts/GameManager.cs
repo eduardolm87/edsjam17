@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
 
 	public Text ConsoleText;
+    public Hitbox HitboxPrefab;
 
 	
 	public void AddConsoleLine(string str)
