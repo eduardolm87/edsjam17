@@ -76,10 +76,26 @@ public class Entity : MonoBehaviour
             {
                 if (hitbox.AffectToGroups.ToList().Intersect(HurtGroups).ToList().Count() > 0)
                 {
-                    Debug.Log("HITBOX ME AFECTA");
+                    OnHitboxHit(hitbox);
                 }
             }
         }
+    }
+
+
+    void OnHitboxHit(Hitbox hitbox)
+    {
+        Debug.Log("HITBOX hit!");
+
+        //Damage formula
+        stats.HP -= Mathf.RoundToInt(hitbox.damage);
+
+        //FX
+        GameManager.Instance.FXManager.Create("Toon Bzz 02 PS", transform.position, 1);
+
+        //Sound
+
+
     }
 
 
