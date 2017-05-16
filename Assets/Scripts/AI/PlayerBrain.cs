@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerBrain : Brain
 {
+    public enum ControlModes
+    { DIRECT = 0, RELATIVE = 1 };
+
+    public ControlModes ControlMode = ControlModes.RELATIVE;
 
     public class PlayerInput
     {
@@ -74,6 +78,8 @@ public class PlayerBrain : Brain
 
 
 
+
+
     public override void Tick()
     {
         playerInput = GetPlayerInput(playerInput);
@@ -82,15 +88,50 @@ public class PlayerBrain : Brain
         if (entity.StunCooldown > 0)
             return;
 
-        MovePlayer(ref playerInput);
+        switch (ControlMode)
+        {
+            case ControlModes.RELATIVE:
+                MovePlayer_Relative(ref playerInput);
+                break;
+            default:
+                MovePlayer_Direct(ref playerInput);
+                break;
+        }
+
 
         if (entity.AttackCooldown == 0)
         {
-            FirePlayer(ref playerInput);
+            UseSkill(ref playerInput);
         }
     }
 
-    void MovePlayer(ref PlayerInput input)
+    void MovePlayer_Relative(ref PlayerInput input)
+    {
+        Vector3 move = Vector3.zero;
+
+        //camera forward and right vectors:
+        var forward = Camera.main.transform.forward;
+        var right = Camera.main.transform.right;
+
+        //project forward and right vectors on the horizontal plane (y = 0)
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
+
+        //this is the direction in the world space we want to move:
+        move = forward * input.Y + right * input.X;
+        float intensity = Mathf.Max(Mathf.Abs(input.X), Mathf.Abs(input.Y));
+
+        if (move.sqrMagnitude != 0)
+        {
+            entity.locomotor.Walk(move, intensity);
+            entity.locomotor.Look(move.normalized);
+
+        }
+    }
+
+    void MovePlayer_Direct(ref PlayerInput input)
     {
         Vector3 move = Vector3.zero;
         if (input.Y > 0)
@@ -114,17 +155,14 @@ public class PlayerBrain : Brain
             entity.locomotor.Walk(move);
     }
 
-    void FirePlayer(ref PlayerInput input)
+    void UseSkill(ref PlayerInput input)
     {
-        float projectileVelocity = 5f;
-        float projectileDamage = 1f;
-        float projectileDestroyInTime = 2f;
-        float projectileCooldown = 1f;
-
         if (input.Fire1Down)
         {
-            Hitbox.Create(entity, (transform.position + transform.forward * 0.5f), transform.forward * projectileVelocity, projectileDamage, projectileDestroyInTime);
-            entity.AttackCooldown = projectileCooldown;
+            if (entity.skill != null)
+            {
+                entity.skill.Use(entity, ref input);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ public class Entity : MonoBehaviour
     public Brain brain;
     public Locomotor locomotor;
     public Stats stats = new Stats();
+    public Skill skill = null;
     public string[] HurtGroups = new string[] { "PLAYER" };
 
     //states and flags
@@ -85,8 +86,6 @@ public class Entity : MonoBehaviour
 
     void OnHitboxHit(Hitbox hitbox)
     {
-        Debug.Log("HITBOX hit!");
-
         //Damage formula
         stats.HP -= Mathf.RoundToInt(hitbox.damage);
 
@@ -94,7 +93,7 @@ public class Entity : MonoBehaviour
         GameManager.Instance.FXManager.Create("Toon Bzz 02 PS", transform.position, 1);
 
         //Sound
-
+        //todo
 
     }
 
