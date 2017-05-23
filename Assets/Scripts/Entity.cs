@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour
     public Rigidbody rigidbody;
     public Brain brain;
     public Locomotor locomotor;
+    public Transform front;
     public Stats stats = new Stats();
     public Skill skill = null;
     public string[] HurtGroups = new string[] { "PLAYER" };
@@ -54,6 +55,9 @@ public class Entity : MonoBehaviour
 
     void Cooldowns()
     {
+        if (brain.IsBusy)
+            return;
+
         ReduceCooldownToZero(ref AttackCooldown);
         ReduceCooldownToZero(ref StunCooldown);
     }

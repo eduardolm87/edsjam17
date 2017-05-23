@@ -8,6 +8,10 @@ public class Brain : MonoBehaviour
 	public Entity entity;
 
 
+    [HideInInspector]
+    public bool IsBusy = false;
+
+
 	public virtual void Tick()
 	{
 		

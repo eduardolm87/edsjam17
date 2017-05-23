@@ -88,6 +88,9 @@ public class PlayerBrain : Brain
         if (entity.StunCooldown > 0)
             return;
 
+        if (IsBusy)
+            return;
+
         switch (ControlMode)
         {
             case ControlModes.RELATIVE:
@@ -161,7 +164,7 @@ public class PlayerBrain : Brain
         {
             if (entity.skill != null)
             {
-                entity.skill.Use(entity, ref input);
+                entity.skill.Use(entity, input);
             }
         }
     }

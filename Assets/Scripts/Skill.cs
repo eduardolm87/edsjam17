@@ -9,7 +9,7 @@ public class Skill : MonoBehaviour
 
     }
 
-    public virtual void Use(Entity owner, ref PlayerBrain.PlayerInput input)
+    public virtual void Use(Entity owner, PlayerBrain.PlayerInput input)
     {
 
     }
