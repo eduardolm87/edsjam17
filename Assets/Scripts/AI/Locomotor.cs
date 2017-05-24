@@ -28,7 +28,7 @@ public class Locomotor : MonoBehaviour
     public void Walk(Vector3 Direction, float speedModifier = 1)
     {
         Vector3 movement = Direction.normalized * entity.stats.Speed * speedModifier;
-
+	
         entity.rigidbody.velocity = movement;
     }
 

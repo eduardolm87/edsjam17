@@ -11,7 +11,7 @@ public class Entity : MonoBehaviour
     public Locomotor locomotor;
     public Transform front;
     public Stats stats = new Stats();
-    public Skill skill = null;
+    public List<Skill> skills = null;
     public string[] HurtGroups = new string[] { "PLAYER" };
 
     //states and flags
