@@ -108,4 +108,28 @@ public class Locomotor : MonoBehaviour
 		return r;
 	}
 
+
+
+	[HideInInspector]
+	public float JumpingStartTime = -999;
+	public float JumpForce = 100f;
+	public float ApexDeceleration = 0f;
+	float MaxJumpTime = 0.6f;
+
+
+
+
+	public void ApplyJumpForce()
+	{
+		float currentJumpDuration = Time.time - JumpingStartTime;
+
+		if (currentJumpDuration < MaxJumpTime)
+		{
+			float modifier = 0.6f - (currentJumpDuration / MaxJumpTime);
+			modifier += ApexDeceleration;
+
+			entity.rigidbody.AddForce(Vector3.up * JumpForce * modifier);
+		}
+	}
+
 }
