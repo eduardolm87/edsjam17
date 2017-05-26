@@ -11,6 +11,16 @@ public class Locomotor : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
+
+	const float transitionWalkToIdle = 1f;
+	bool previousmoving = false;
+
+	[HideInInspector]
+	public bool IsMoving = false;
+
+	const float ForceMultiplier=7f;
+
+
     void Awake()
     {
         FindAnimator();
@@ -29,7 +39,10 @@ public class Locomotor : MonoBehaviour
     {
         Vector3 movement = Direction.normalized * entity.stats.Speed * speedModifier;
 	
-        entity.rigidbody.velocity = movement;
+        //entity.rigidbody.velocity = movement;
+
+		entity.rigidbody.AddForce(movement * ForceMultiplier);
+
     }
 
 
@@ -42,15 +55,6 @@ public class Locomotor : MonoBehaviour
     {
         AnimationUpdate();
     }
-
-
-    const float transitionWalkToIdle = 1f;
-    bool previousmoving = false;
-
-
-    [HideInInspector]
-    public bool IsMoving = false;
-
 
 
     void AnimationUpdate()

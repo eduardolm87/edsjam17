@@ -195,7 +195,7 @@ public class PlayerBrain : Brain
 
 	float MaxJumpTime = 0.6f;
 	float JumpingStartTime = -999;
-	float JumpStrengthPerFrame = 0.4f;
+	float JumpStrengthPerFrame = 32f;
 
 	void Jump()
 	{
@@ -212,7 +212,7 @@ public class PlayerBrain : Brain
 		float currentJumpDuration = Time.time - JumpingStartTime;
 		if (currentJumpDuration < MaxJumpTime)
 		{
-			entity.rigidbody.velocity += Vector3.up * JumpStrengthPerFrame;
+			entity.rigidbody.AddForce(Vector3.up * JumpStrengthPerFrame);
 		}
 	}
 }

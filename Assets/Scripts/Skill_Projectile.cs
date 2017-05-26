@@ -10,7 +10,7 @@ public class Skill_Projectile : Skill
     public float projectileCooldown = 0.25f;
     public string ExecuteAnimation = "";
     public float DelayAnimation = 0;
-
+	public bool Visible = false;
 
 
 
@@ -41,7 +41,7 @@ public class Skill_Projectile : Skill
 
     void CreateHitbox(Entity owner, PlayerBrain.PlayerInput input)
     {
-        Hitbox.Create(owner, owner.front.position, owner.transform.forward * projectileVelocity, projectileDamage, projectileDestroyInTime);
+		Hitbox.Create(owner, owner.front.position, owner.transform.forward * projectileVelocity, projectileDamage, projectileDestroyInTime,Visible);
         owner.AttackCooldown = projectileCooldown;
     }
 }

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance = null;
     public SoundManager SoundManager;
     public FXManager FXManager;
+	public Cheats Cheats;
 
     void Awake()
     {
