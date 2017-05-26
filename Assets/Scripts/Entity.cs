@@ -13,6 +13,7 @@ public class Entity : MonoBehaviour
     public Stats stats = new Stats();
     public List<Skill> skills = null;
     public string[] HurtGroups = new string[] { "PLAYER" };
+	public string WhenHitFX = "Zap 02 PS";
 
     //states and flags
     [HideInInspector]
@@ -94,10 +95,12 @@ public class Entity : MonoBehaviour
         stats.HP -= Mathf.RoundToInt(hitbox.damage);
 
         //FX
-        GameManager.Instance.FXManager.Create("Toon Bzz 02 PS", transform.position, 1);
+		GameManager.Instance.FXManager.Create(WhenHitFX, transform.position, 1);
 
         //Sound
         //todo
+
+
 
     }
 
