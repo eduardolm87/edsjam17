@@ -11,6 +11,10 @@ public class PlayerBrain : Brain
 
 	;
 
+	public float JumpForce = 100f;
+	public float ApexDeceleration = 1f;
+
+
 	public ControlModes ControlMode = ControlModes.RELATIVE;
 
 	public class PlayerInput
@@ -195,16 +199,18 @@ public class PlayerBrain : Brain
 
 	float MaxJumpTime = 0.6f;
 	float JumpingStartTime = -999;
-	float JumpStrengthPerFrame = 32f;
+
 
 	void Jump()
 	{
-		if (playerInput.JumpDown)
+		
+		if (playerInput.JumpDown && entity.locomotor.IsGrounded())
 		{
 			JumpingStartTime = Time.time;	
 		}
 
 		ApplyJumpForce();
+
 	}
 
 	void ApplyJumpForce()
@@ -212,7 +218,10 @@ public class PlayerBrain : Brain
 		float currentJumpDuration = Time.time - JumpingStartTime;
 		if (currentJumpDuration < MaxJumpTime)
 		{
-			entity.rigidbody.AddForce(Vector3.up * JumpStrengthPerFrame);
+			float modifier = 0.6f - (currentJumpDuration / MaxJumpTime);
+			modifier += ApexDeceleration;
+
+			entity.rigidbody.AddForce(Vector3.up * JumpForce * modifier);
 		}
 	}
 }
